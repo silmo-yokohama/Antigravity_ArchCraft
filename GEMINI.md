@@ -122,51 +122,56 @@
 
 ### Phase 4: 設計
 
-**ワークフロー**: [phase-4-design.md](.agent/workflows/phase-4-design.md)
+Phase 4は複数のサブフェーズに分割されている：
 
-1. 必要な設計書を判定（DB、API、画面等）
-2. 分割ファイル構成で設計書を作成
-3. 相互参照ルールを遵守（命名統一、参照マップ）
-4. **画面設計はCCにHTMLワイヤーフレーム生成を依頼**
-5. `docs/design/index.md` に参照マップを作成
-6. CCにレビュー依頼 → ユーザー承認
+| サブフェーズ | ワークフロー | 内容 |
+|-------------|-------------|------|
+| 4.0 | [phase-4-0-basic.md](.agent/workflows/phase-4-0-basic.md) | 基本設計・必要な設計書の判定 |
+| 4.1 | [phase-4-1-data.md](.agent/workflows/phase-4-1-data.md) | データ設計（DB/ファイル/キャッシュ） |
+| 4.2 | [phase-4-2-api.md](.agent/workflows/phase-4-2-api.md) | API設計 |
+| 4.3 | [phase-4-3-screens-planning.md](.agent/workflows/phase-4-3-screens-planning.md) | 画面設計プランニング |
+| 4.4 | [phase-4-4-screens-mockup.md](.agent/workflows/phase-4-4-screens-mockup.md) | 画面モック生成（ユーザー主導） |
 
-#### 画面設計のフロー
+#### 各サブフェーズの共通フロー
 
 ```
-1. 必須アセット生成（AG: Nano Banana）
-   - ロゴ、確定アイコン等
-
-2. 共通コンポーネント作成
-   - AG: design.md 作成
-   - AG→CC: ワイヤーフレーム生成依頼
-   - CC: wireframe.html 生成
-
-3. 各画面作成
-   - AG: design.md 作成
-   - AG→CC: ワイヤーフレーム生成依頼
-   - CC: wireframe.html 生成（レスポンシブ1ファイル）
-
-4. 追加アセット生成（必要に応じて）
+1. 前提条件チェック
+2. ユーザーと対話しながらプランニング
+3. Implementation Plan作成 → ユーザー承認
+4. 設計書作成
+5. CCレビュー
+6. ユーザー最終承認
+7. **このフェーズ完了**
 ```
 
-#### CCへのデザインモック生成依頼
+#### Ph4.0: 基本設計
 
-```bash
-claude -p "docs/design/screens/[screen]/design.md を読み込んで、
-HTMLベースのデザインモックを生成してください。
+- システム概要・アーキテクチャを設計
+- **このプロジェクトで必要な設計書を決定**
+- Ph4.1〜4.4に該当しない設計書が必要な場合はユーザーに通知
 
-## 生成ルール
-- フロントエンドデザインを使用して
-- 1ファイルでレスポンシブ対応（PC/スマホ）
-- 日本語で表記
-- design.mdの配色に従う（Figmaライクな本格デザイン）
-- アニメーション・リンクは不要（静的ビジュアル）
-- アセットはdocs/design/screens/_assets/から参照
+#### Ph4.1: データ設計
 
-## 出力先
-docs/design/screens/[screen]/mockup.html" --dangerously-skip-permissions
-```
+- DB/ファイル/キャッシュ等のデータ構造設計
+- 出力: `docs/design/db/`
+
+#### Ph4.2: API設計
+
+- RESTful/GraphQL等のエンドポイント設計
+- ファイル構成: `[path]/[action].[method].md`
+- 出力: `docs/design/api/`
+
+#### Ph4.3: 画面設計プランニング
+
+- 共通設計（配色、URL設計等）を `docs/design/screens/index.md` に記載
+- CCへの指示書テンプレートを準備
+- **AGの作業はここで完了**
+
+#### Ph4.4: 画面モック生成（ユーザー主導）
+
+- ユーザーがCCにHTMLモック生成を依頼
+- 出力: `docs/design/screens/html/`
+- アセット依頼はユーザー経由でAGに依頼
 
 #### 設計書の分割構成
 
@@ -179,39 +184,13 @@ docs/design/
 │   └── [table].md        # 各テーブル詳細
 ├── api/
 │   ├── index.md          # エンドポイント一覧
-│   └── [resource].md     # 各API詳細
+│   └── [path]/
+│       └── [action].[method].md  # 各API詳細
 └── screens/
-    ├── index.md          # 画面一覧、遷移図
-    ├── _components/      # 共通コンポーネント
-    └── [screen]/
-        ├── design.md
-        ├── wireframe-pc.png
-        └── wireframe-sp.png
+    ├── README.md         # 共通設計
+    ├── _assets/          # 画像アセット
+    └── html/             # HTMLモック
 ```
-
-#### ファイル構成
-
-```
-docs/design/screens/
-├── _assets/           # 画像アセット（ロゴ、アイコン等）
-│   ├── logo.png
-│   └── ...
-├── _components/
-│   ├── header/
-│   │   ├── design.md
-│   │   └── mockup.html
-│   └── ...
-├── home/
-│   ├── design.md
-│   └── mockup.html
-└── ...
-```
-
-#### Nano Bananaの役割
-
-- **画像アセット生成**（ロゴ、アイコン、イラスト等）
-- 出力先: `docs/design/screens/_assets/`
-- デザインモックはCCがHTMLで生成
 
 ### Phase 5: 環境構築
 
