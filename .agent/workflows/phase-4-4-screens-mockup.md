@@ -40,6 +40,14 @@ AGの作業はPh4.3で完了しており、このフェーズはユーザーとC
 docs/design/screens/index.md と docs/tech-stack.md を読み込んで、
 HTMLベースのデザインモックを生成してください。
 
+## 事前に読み込むドキュメント
+
+以下の順番で読み込んでください：
+1. `docs/requirements.md` - 要件定義
+2. `docs/design/basic-design.md` - 基本設計
+3. `docs/design/screens/index.md` - 画面設計仕様
+4. `docs/tech-stack.md` - 実装技術
+
 ## 重要な認識
 
 このHTMLプロジェクトは**デザインモック**であり、実際の実装は

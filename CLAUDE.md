@@ -195,9 +195,12 @@ HTMLベースのデザインモックを生成してください..."
 
 #### 必ず守ること
 
-1.  **index.md と tech-stack.md を最初に読み込む**
-    -   デザイン方針、レスポンシブ方針を把握
-    -   実装で使用する技術を確認
+1.  **事前に読み込むドキュメント**
+    以下の順番で読み込む：
+    1. `docs/requirements.md` - 要件定義
+    2. `docs/design/basic-design.md` - 基本設計
+    3. `docs/design/screens/index.md` - 画面設計仕様
+    4. `docs/tech-stack.md` - 実装技術
 
 2.  **frontend-designスキルを使用**
     -   必ずスキルを読み込んで使用すること
